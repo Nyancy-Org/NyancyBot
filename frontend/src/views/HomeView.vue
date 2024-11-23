@@ -5,25 +5,55 @@ const { xs } = useDisplay()
 </script>
 
 <template>
-  <v-responsive class="align-centerfill-height mx-auto" max-width="900">
-    <v-img
-      class="mb-4"
-      height="150"
-      src="https://cdn.imlazy.ink:233/img/%E8%A1%A8%E6%83%85%E5%8C%85/%E7%8C%AB%E7%BE%BD%E9%9B%AB/059.png"
-    />
+  <v-row class="h-100" justify="center" align="center" no-gutters>
+    <v-col cols="12" md="8" sm="10" xs="12" align-self="center">
+      <v-card align="center">
+        <v-card-title>
+          <v-img
+            alt="Logo"
+            :width="200"
+            src="https://cdn.imlazy.ink:233/img/%E8%A1%A8%E6%83%85%E5%8C%85/%E7%8C%AB%E7%BE%BD%E9%9B%AB/059.png"
+          />
+          <div
+            style="transition: all 0.5s"
+            class="text-primary"
+            :class="xs ? 'text-h4' : 'text-h3'"
+          >
+            Nyancy <span class="text-secondary">Bot</span>
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <div class="mt-4">
+            <p class="my-5">一个用于管理 OneBot-11 的插件的插件的工具</p>
 
-    <div class="text-center">
-      <h1
-        class="text-primary text-h2 font-weight-medium"
-        :class="xs ? 'text-h4' : 'text-h3'"
-        style="transition: all 0.5s"
-      >
-        Nyancy <span class="text-secondary">Bot</span>
-      </h1>
-      <div class="py-4" />
-      <v-btn prepend-icon="mdi-cat" color="primary" variant="tonal" size="large" to="/admin"
-        >开始使用</v-btn
-      >
-    </div>
-  </v-responsive>
+            <v-btn prepend-icon="mdi-cat" color="primary" variant="tonal" size="large" to="/admin"
+              >开始使用</v-btn
+            >
+          </div>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-center">
+          <v-btn
+            prepend-icon="mdi-github"
+            href="https://github.com/Nyancy-Org/NyancyBot"
+            target="_blank"
+            >Github</v-btn
+          >
+          <v-btn
+            prepend-icon="mdi-file-document-outline"
+            color="primary"
+            href="https://github.com/Nyancy-Org/NyancyBot/wiki"
+            target="_blank"
+            >使用文档</v-btn
+          >
+          <v-btn
+            prepend-icon="mdi-bug-outline"
+            color="brown"
+            href="https://github.com/Nyancy-Org/NyancyBot/issues"
+            target="_blank"
+            >问题反馈</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>

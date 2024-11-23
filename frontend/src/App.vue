@@ -9,7 +9,7 @@ const GLOBAL_COMPONENTS = [AppFooter, Snackbar, FloatingMenu]
 <template>
   <v-app>
     <v-main>
-      <v-container class="fill-height">
+      <v-container class="h-100">
         <RouterView v-slot="{ Component }">
           <v-fade-transition>
             <component :is="Component" />

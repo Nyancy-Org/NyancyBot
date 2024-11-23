@@ -77,7 +77,7 @@ onMounted(() => {
 
 <template>
   <v-row>
-    <v-col cols="12" xs="12" sm="6" md="4" v-for="(item, i) in statisticCard" :key="i">
+    <v-col cols="12" xs="12" sm="6" md="4" xl="3" v-for="(item, i) in statisticCard" :key="i">
       <v-card variant="outlined" :loading="loading" :disabled="loading">
         <v-card-title> {{ item.title }} </v-card-title>
 
@@ -100,7 +100,7 @@ onMounted(() => {
         </v-card-actions>
       </v-card>
     </v-col>
-    <v-col cols="12" xs="12" sm="6" md="4">
+    <v-col cols="12" xs="12" sm="6" md="4" xl="3">
       <v-card v-if="ws" variant="outlined" ref="c1" :loading="loading" :disabled="loading">
         <v-card-title> Websocket 状态 </v-card-title>
 
@@ -134,7 +134,7 @@ onMounted(() => {
         </v-card-actions>
       </v-card>
     </v-col>
-    <v-col cols="12" xs="12" sm="12" md="8">
+    <v-col cols="12" xs="12" sm="12" md="8" xl="6">
       <v-card variant="outlined" :disabled="loading" @click="initData">
         <v-img
           src="https://api.imlazy.ink/img/"
