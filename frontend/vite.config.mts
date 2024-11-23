@@ -16,7 +16,7 @@ export default defineConfig({
     port: 1242,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:1240/',
+        target: 'http://127.0.0.1:1241/',
         // rewrite: (path) => path.replace(/^\/v1/, ''),
         changeOrigin: true,
         ws: true
@@ -25,55 +25,47 @@ export default defineConfig({
   },
   plugins: [
     VueRouter({
-      dts: 'src/typed-router.d.ts',
+      dts: 'src/typed-router.d.ts'
     }),
     AutoImport({
       imports: [
         'vue',
         {
-          'vue-router/auto': ['useRoute', 'useRouter'],
+          'vue-router/auto': ['useRoute', 'useRouter']
         }
       ],
       dts: 'src/auto-imports.d.ts',
       eslintrc: {
-        enabled: true,
+        enabled: true
       },
-      vueTemplate: true,
+      vueTemplate: true
     }),
     Components({
-      dts: 'src/components.d.ts',
+      dts: 'src/components.d.ts'
     }),
     Vue({
-      template: { transformAssetUrls },
+      template: { transformAssetUrls }
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     Vuetify({
       autoImport: true,
       styles: {
-        configFile: 'src/styles/settings.scss',
-      },
-    }),
+        configFile: 'src/styles/settings.scss'
+      }
+    })
   ],
   define: { 'process.env': {} },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     },
-    extensions: [
-      '.js',
-      '.json',
-      '.jsx',
-      '.mjs',
-      '.ts',
-      '.tsx',
-      '.vue',
-    ],
+    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue']
   },
   css: {
     preprocessorOptions: {
       sass: {
-        api: 'modern-compiler',
-      },
-    },
-  },
+        api: 'modern-compiler'
+      }
+    }
+  }
 })

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import AppFooter from './components/AppFooter.vue'
 import FloatingMenu from './components/FloatingMenu.vue'
+import Snackbar from './components/Snackbar.vue'
 
-const GLOBAL_COMPONENTS = [AppFooter, FloatingMenu]
+const GLOBAL_COMPONENTS = [AppFooter, Snackbar, FloatingMenu]
 </script>
 
 <template>

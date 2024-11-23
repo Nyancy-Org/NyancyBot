@@ -21,7 +21,7 @@ const { xs } = useDisplay()
         Nyancy <span class="text-secondary">Bot</span>
       </h1>
       <div class="py-4" />
-      <v-btn prepend-icon="mdi-cat" color="primary" variant="tonal" size="large" to="/auth"
+      <v-btn prepend-icon="mdi-cat" color="primary" variant="tonal" size="large" to="/admin"
         >开始使用</v-btn
       >
     </div>
