@@ -2,8 +2,8 @@
 /dist
 /node_modules
 /data
-/plugins
-!.plugins/example
+/plugins/*
+!/plugins/example
 
 # Logs
 logs
