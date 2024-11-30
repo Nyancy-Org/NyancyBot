@@ -40,3 +40,11 @@ export const deletePluginApi = async (plugin: PluginList) =>
       }
     })
   )
+
+// 重载插件
+export const reloadPluginApi = async (plugin: PluginList) =>
+  getResponse<string>(
+    await axios.post('/plugins/reload', {
+      name: plugin.name
+    })
+  )

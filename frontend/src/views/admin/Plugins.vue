@@ -5,7 +5,8 @@ import {
   getAllPluginListApi,
   togglePluginApi,
   setPluginAutoLoadApi,
-  deletePluginApi
+  deletePluginApi,
+  reloadPluginApi
 } from '@/apis/plugins'
 import _ from 'lodash'
 import type { PluginList } from '@/types/plugin'
@@ -37,20 +38,36 @@ const loadItems = _.throttle(async () => {
 }, 1000)
 
 const toggleItem = async (item: PluginList) => {
+  await openConfirmDialog('警告', `你确定要${item.enabled ? '禁用' : '启用'}插件 ${item.name} ？`)
   const { msg } = await togglePluginApi(item)
   loadItems()
   return showMsg(msg, 'green')
 }
 
 const setAutoLoad = async (item: PluginList) => {
+  try {
+    await openConfirmDialog(
+      '警告',
+      `你确定要将插件 ${item.name} 自启动设置为：${item.autoLoad ? '启用' : '禁用'}？`
+    )
+  } catch {
+    serverItems.value.find((i) => i.name === item.name)!.autoLoad = !item.autoLoad
+    return
+  }
   const { msg } = await setPluginAutoLoadApi(item)
   loadItems()
   return showMsg(msg, 'green')
 }
 
+const reloadItem = async (item: PluginList) => {
+  await openConfirmDialog('警告', `你确定要重载插件 ${item.name} ？`)
+  const { msg } = await reloadPluginApi(item)
+  loadItems()
+  return showMsg(msg, 'green')
+}
+
 const deleteItem = async (item: PluginList) => {
-  const flag = await openConfirmDialog('警告', `你确定要删除插件 ${item.name} ？此操作不可逆转！`)
-  if (!flag) return
+  await openConfirmDialog('警告', `你确定要删除插件 ${item.name} ？此操作不可逆转！`)
   const { msg } = await deletePluginApi(item)
   loadItems()
   return showMsg(msg, 'green')
@@ -117,6 +134,14 @@ onMounted(() => {
             </v-switch>
           </template>
           <template v-slot:[`item.operate`]="{ item }">
+            <v-btn
+              class="mr-4"
+              icon="mdi-refresh"
+              variant="text"
+              size="small"
+              color="primary"
+              @click="reloadItem(item)"
+            ></v-btn>
             <v-btn
               icon="mdi-trash-can-outline"
               variant="text"
