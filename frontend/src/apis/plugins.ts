@@ -30,3 +30,13 @@ export const setPluginAutoLoadApi = async (plugin: PluginList) =>
       enabled: plugin.autoLoad
     })
   )
+
+// 删除插件
+export const deletePluginApi = async (plugin: PluginList) =>
+  getResponse<string>(
+    await axios.delete('/plugins', {
+      params: {
+        name: plugin.name
+      }
+    })
+  )

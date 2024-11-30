@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { indexStore } from '@/stores'
-import { getAllPluginListApi, togglePluginApi, setPluginAutoLoadApi } from '@/apis/plugins'
+import {
+  getAllPluginListApi,
+  togglePluginApi,
+  setPluginAutoLoadApi,
+  deletePluginApi
+} from '@/apis/plugins'
 import _ from 'lodash'
 import type { PluginList } from '@/types/plugin'
 
-const { showMsg } = indexStore(),
+const { showMsg, openConfirmDialog } = indexStore(),
   headers = ref([
     { key: 'name', title: '插件名称' },
     { key: 'enabled', title: '状态' },
@@ -31,18 +36,24 @@ const loadItems = _.throttle(async () => {
   }
 }, 1000)
 
-const refreshItems = () => loadItems()
-
 const toggleItem = async (item: PluginList) => {
   const { msg } = await togglePluginApi(item)
-  showMsg(msg, 'green')
   loadItems()
+  return showMsg(msg, 'green')
 }
 
 const setAutoLoad = async (item: PluginList) => {
   const { msg } = await setPluginAutoLoadApi(item)
-  showMsg(msg, 'green')
   loadItems()
+  return showMsg(msg, 'green')
+}
+
+const deleteItem = async (item: PluginList) => {
+  const flag = await openConfirmDialog('警告', `你确定要删除插件 ${item.name} ？此操作不可逆转！`)
+  if (!flag) return
+  const { msg } = await deletePluginApi(item)
+  loadItems()
+  return showMsg(msg, 'green')
 }
 
 onMounted(() => {
@@ -57,7 +68,7 @@ onMounted(() => {
 
       <div class="d-flex align-center ga-4">
         <v-btn
-          @click="refreshItems"
+          @click="loadItems"
           :loading="loading"
           prepend-icon="mdi-refresh"
           variant="outlined"
@@ -106,7 +117,13 @@ onMounted(() => {
             </v-switch>
           </template>
           <template v-slot:[`item.operate`]="{ item }">
-            <v-btn icon="mdi-trash-can-outline" variant="text" size="small" color="red"></v-btn>
+            <v-btn
+              icon="mdi-trash-can-outline"
+              variant="text"
+              size="small"
+              color="red"
+              @click="deleteItem(item)"
+            ></v-btn>
           </template>
         </v-data-table-server>
       </v-card-text>

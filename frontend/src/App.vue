@@ -2,8 +2,9 @@
 import AppFooter from './components/AppFooter.vue'
 import FloatingMenu from './components/FloatingMenu.vue'
 import Snackbar from './components/Snackbar.vue'
+import ConfirmDialog from './components/ConfirmDialog.vue'
 
-const GLOBAL_COMPONENTS = [AppFooter, Snackbar, FloatingMenu]
+const GLOBAL_COMPONENTS = [AppFooter, Snackbar, FloatingMenu, ConfirmDialog]
 </script>
 
 <template>
