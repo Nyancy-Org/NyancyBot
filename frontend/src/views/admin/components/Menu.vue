@@ -22,7 +22,7 @@ const menus = [
     title: '连接状态',
     icon: 'vector-link',
     color: 'teal',
-    to: '/admin/oauth2'
+    to: '/admin/ws'
   },
   {
     title: '查看日志',

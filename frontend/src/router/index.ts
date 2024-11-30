@@ -51,6 +51,15 @@ const router = createRouter({
             title: '插件管理'
           },
           component: () => import('../views/admin/Plugins.vue')
+        },
+
+        {
+          path: 'ws',
+          name: 'ws',
+          meta: {
+            title: '连接状态'
+          },
+          component: () => import('../views/admin/Ws.vue')
         }
       ]
     }
