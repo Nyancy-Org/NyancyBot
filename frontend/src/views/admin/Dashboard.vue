@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useElementSize } from '@vueuse/core'
-import { getAllPluginListApi, getLoadedPluginListApi, getAutoLoadsApi } from '@/apis/plugins'
+import { getAllPluginListApi, getAutoLoadsApi } from '@/apis/plugins'
 import { getStatusApi } from '@/apis/ws'
+import type { PluginList } from '@/types/plugin'
 
 const c1 = ref<HTMLElement>(),
   { height: c1_h } = useElementSize(c1),
   loading = ref(false),
-  plugins = ref<string[]>([]),
+  plugins = ref<PluginList[]>([]),
   loaded = ref<string[]>([]),
   autoLoads = ref<string[]>([]),
   ws = ref<boolean>(false)
@@ -15,10 +16,10 @@ const c1 = ref<HTMLElement>(),
 // 获取数据
 const initData = async () => {
   loading.value = true
-  plugins.value = await getAllPluginListApi()
-  loaded.value = await getLoadedPluginListApi()
-  autoLoads.value = await getAutoLoadsApi()
-  ws.value = (await getStatusApi()).status
+  plugins.value = (await getAllPluginListApi()).data
+  loaded.value = plugins.value.filter((item) => item.enabled).map((item) => item.name)
+  autoLoads.value = (await getAutoLoadsApi()).data
+  ws.value = (await getStatusApi()).data.status
   loading.value = false
 }
 

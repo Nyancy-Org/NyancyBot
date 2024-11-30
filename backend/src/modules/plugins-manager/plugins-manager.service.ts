@@ -25,16 +25,28 @@ export class PluginsManagerService implements OnModuleDestroy {
         Authorization: "Bearer " + config.o.key,
       },
     });
-    Logger.log("初始化基础包：" + config.o.http);
+    Logger.log("初始化基础包：" + JSON.stringify(config.o));
   }
 
   list() {
+    const all = fs.readdirSync(this.pluginsDir).filter((i) => {
+      const itemPath = path.join(this.pluginsDir, i);
+      return (
+        fs.statSync(itemPath).isDirectory() && fs.existsSync(path.join(itemPath, this.entryFile))
+      );
+    });
+
+    const loaded = Array.from(this.plugins.keys());
+
+    const autoLoads = config.plugin.autoLoads;
+
     return {
-      data: fs.readdirSync(this.pluginsDir).filter((i) => {
-        const itemPath = path.join(this.pluginsDir, i);
-        return (
-          fs.statSync(itemPath).isDirectory() && fs.existsSync(path.join(itemPath, this.entryFile))
-        );
+      data: all.map((i) => {
+        return {
+          name: i,
+          enabled: loaded.includes(i),
+          autoLoad: autoLoads.includes(i),
+        };
       }),
     };
   }
@@ -77,6 +89,16 @@ export class PluginsManagerService implements OnModuleDestroy {
     this.plugins.delete(pluginName);
 
     this.clearCache(pluginName);
+  }
+
+  async toggleEnabled(name: string) {
+    if (this.plugins.has(name)) {
+      await this.disable(name);
+      return false;
+    } else {
+      await this.load(name);
+      return true;
+    }
   }
 
   // 可能删不掉，没权限？

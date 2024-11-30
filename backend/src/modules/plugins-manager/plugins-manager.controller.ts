@@ -40,6 +40,13 @@ export class PluginsManagerController {
     return { msg: `插件 ${name} 已禁用` };
   }
 
+  @Post("toggle/enabled")
+  async toggleEnabled(@Body() body: PluginNameDto) {
+    const { name } = body;
+    const status = await this.pluginsManagerService.toggleEnabled(name);
+    return { msg: `插件 ${name} 已${status ? "启用" : "禁用"}` };
+  }
+
   @Delete()
   async removePlugin(@Query() query: PluginNameDto) {
     const { name } = query;

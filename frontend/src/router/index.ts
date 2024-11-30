@@ -42,6 +42,15 @@ const router = createRouter({
             title: '仪表板'
           },
           component: () => import('../views/admin/Dashboard.vue')
+        },
+
+        {
+          path: 'plugins',
+          name: 'plugins',
+          meta: {
+            title: '插件管理'
+          },
+          component: () => import('../views/admin/Plugins.vue')
         }
       ]
     }
