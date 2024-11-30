@@ -34,6 +34,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       path: request.originalUrl,
     };
 
-    response.status(200).json(sendBody);
+    response.status(status).json(sendBody);
   }
 }
