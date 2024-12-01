@@ -153,7 +153,11 @@ export class PluginsManagerService implements OnModuleDestroy {
     if (ps) {
       ps.forEach(async (p, i) => {
         Logger.log(`正在加载第 ${i + 1} 个插件: ${p}`);
-        await this.load(p);
+        try {
+          await this.load(p);
+        } catch (e) {
+          Logger.error(`加载插件 ${p} 失败: ${e.message}`);
+        }
       });
     }
   }
