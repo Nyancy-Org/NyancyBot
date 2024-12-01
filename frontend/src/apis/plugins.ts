@@ -16,7 +16,7 @@ export const getAutoLoadsApi = async () =>
 
 // 切换插件状态
 export const togglePluginApi = async (plugin: PluginList) =>
-  getResponse<string>(
+  getResponse<null>(
     await axios.post('/plugins/toggle/enabled', {
       name: plugin.name
     })
@@ -24,7 +24,7 @@ export const togglePluginApi = async (plugin: PluginList) =>
 
 // 设置插件自启动
 export const setPluginAutoLoadApi = async (plugin: PluginList) =>
-  getResponse<string>(
+  getResponse<null>(
     await axios.post('/plugins/autoLoad', {
       name: plugin.name,
       enabled: plugin.autoLoad
@@ -33,7 +33,7 @@ export const setPluginAutoLoadApi = async (plugin: PluginList) =>
 
 // 删除插件
 export const deletePluginApi = async (plugin: PluginList) =>
-  getResponse<string>(
+  getResponse<null>(
     await axios.delete('/plugins', {
       params: {
         name: plugin.name
@@ -43,7 +43,7 @@ export const deletePluginApi = async (plugin: PluginList) =>
 
 // 重载插件
 export const reloadPluginApi = async (plugin: PluginList) =>
-  getResponse<string>(
+  getResponse<null>(
     await axios.post('/plugins/reload', {
       name: plugin.name
     })

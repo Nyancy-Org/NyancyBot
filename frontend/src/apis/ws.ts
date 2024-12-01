@@ -9,6 +9,4 @@ export const getStatusApi = async () =>
 
 // 设置状态
 export const setStatusApi = async (status: boolean) =>
-  getResponse<{
-    status: boolean
-  }>(await axios.post('/ws/action', { action: status ? 0 : 1 }))
+  getResponse<null>(await axios.post('/ws/action', { action: status ? 0 : 1 }))
