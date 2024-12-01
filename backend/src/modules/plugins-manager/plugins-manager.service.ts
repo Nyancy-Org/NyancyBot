@@ -66,7 +66,11 @@ export class PluginsManagerService implements OnModuleDestroy {
       throw new Error(`${plugin} 无效的插件😅🤜🏼 导出不合法`);
     }
 
-    const pluginInstance = new PluginClass(this._axios); // 创建插件实例
+    const pluginInstance = new PluginClass({
+      axios: this._axios,
+      master: config.o.admin,
+      Logger: Logger,
+    }); // 创建插件实例
     if (
       typeof pluginInstance.onEnable !== "function" ||
       typeof pluginInstance.onDisable !== "function"
@@ -173,6 +177,8 @@ export class PluginsManagerService implements OnModuleDestroy {
     this.plugins.forEach((plugin) => {
       if (typeof plugin.handleMessage === "function") {
         plugin.handleMessage(message);
+      } else {
+        Logger.error(`插件 ${plugin} 没有实现 handleMessage 方法`);
       }
     });
   }

@@ -4,6 +4,8 @@
 /data
 /plugins/*
 !/plugins/example
+/plugins/example/node_modules
+/plugins/example/dist
 
 # Logs
 logs
