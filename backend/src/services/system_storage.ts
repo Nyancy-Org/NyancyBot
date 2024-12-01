@@ -68,11 +68,10 @@ class StorageSubsystem {
     }
     return target;
   }
-
   /**
    * Instantiate an object based on the class definition and identifier
    */
-  public load(category: string, classz: any, uuid: string) {
+  public load(category: string, instance: any, uuid: string) {
     const dirPath = path.join(StorageSubsystem.DATA_PATH, category);
     if (!fs.existsSync(dirPath)) fs.mkdirsSync(dirPath);
     if (!this.checkFileName(uuid))
@@ -81,7 +80,7 @@ class StorageSubsystem {
     if (!fs.existsSync(filePath)) return null;
     const data = fs.readFileSync(filePath, { encoding: "utf-8" });
     const dataObject = JSON.parse(data);
-    const target = new classz();
+    const target = new instance();
     // for (const v of Object. keys(target)) {
     // if (dataObject[v] !== undefined) target[v] = dataObject[v];
     // }

@@ -42,6 +42,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true, // 自动剔除 DTO 中未定义的字段，如 "test"
+      forbidNonWhitelisted: true, // 如果有未定义的字段，抛出错误
       transform: true,
     }),
   );
@@ -50,7 +52,7 @@ async function bootstrap() {
   app.useGlobalGuards(new RequestSpeedLimitGuard());
   app.setGlobalPrefix("api");
 
-  await app.listen(config.httpPort);
+  await app.listen(config.http.port);
   Logger.log(`服务已启动：${await app.getUrl()}`);
 }
 bootstrap();
