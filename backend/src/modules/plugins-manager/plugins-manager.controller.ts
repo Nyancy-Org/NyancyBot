@@ -69,7 +69,6 @@ export class PluginsManagerController {
   }
 
   // 设置为自启动
-  // TODO: 可批量设置
   @Post("autoLoad")
   setAutoLoad(@Body() body: PluginAutoLoad) {
     const { name, enabled } = body;

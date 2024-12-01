@@ -48,9 +48,10 @@ const save = async () => {
   try {
     loading.value = true
     const o2 = formatSetObj(
-      {
-        [activeTab.value]: systemConfigs.value[activeTab.value]
-      },
+      // {
+      //   [activeTab.value]: systemConfigs.value[activeTab.value]
+      // },
+      systemConfigs.value,
       {
         port: 'number',
         admin: 'numArr',
@@ -58,8 +59,7 @@ const save = async () => {
       }
     )
     await saveSettingsApi(o2)
-    // const { msg } =
-    // return showMsg(msg, 'green')
+    getConfig()
   } finally {
     loading.value = false
   }

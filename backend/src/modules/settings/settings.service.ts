@@ -18,14 +18,15 @@ export class SettingsService {
   }
 
   update(_config: AppConfig) {
-    saveConfig(_config);
-    Object.assign(config, _config);
+    saveConfig(Object.assign(config, _config));
 
     if (!_.isEqual(config.o, _config.o)) {
       // 更新 OneBot 信息后需要手动重载插件
       this.pluginManager.initBasePacket();
-      this.wsClient.stop();
-      this.wsClient.startWs();
+      if (this.wsClient.getStatus()) {
+        this.wsClient.stop();
+        this.wsClient.startWs();
+      }
     }
 
     return {
