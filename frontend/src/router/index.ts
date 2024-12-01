@@ -60,6 +60,15 @@ const router = createRouter({
             title: '连接状态'
           },
           component: () => import('../views/admin/Ws.vue')
+        },
+
+        {
+          path: 'settings',
+          name: 'settings',
+          meta: {
+            title: '系统配置'
+          },
+          component: () => import('../views/admin/Settings.vue')
         }
       ]
     },
@@ -97,7 +106,7 @@ router.beforeEach((to, from, next) => {
     })
   }
 
-  document.title = (to.meta.title || '首页') + ' - Nyancy Account'
+  document.title = (to.meta.title || '首页') + ' - Nyancy Bot'
 
   next()
 })

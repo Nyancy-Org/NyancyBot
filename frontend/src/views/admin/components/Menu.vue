@@ -28,13 +28,14 @@ const menus = [
     title: '查看日志',
     icon: 'script-text-key-outline',
     color: 'purple',
-    to: '/admin/loginLogs'
+    to: '/admin/logs',
+    disabled: true
   },
   {
     title: '系统配置',
     icon: 'cog-outline',
     color: 'blue-grey',
-    to: '/admin/site'
+    to: '/admin/settings'
   }
 ]
 </script>
@@ -70,6 +71,7 @@ const menus = [
       :title="item.title"
       :to="item.to"
       :color="item.color"
+      :disabled="item.disabled"
     ></v-list-item>
   </v-list>
   <!-- <v-divider></v-divider>
