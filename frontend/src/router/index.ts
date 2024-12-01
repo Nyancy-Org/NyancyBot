@@ -62,8 +62,44 @@ const router = createRouter({
           component: () => import('../views/admin/Ws.vue')
         }
       ]
+    },
+
+    // 403
+    {
+      path: '/403',
+      name: '403',
+      meta: {
+        title: '403 Forbidden'
+      },
+      component: () => import('../views/error/403.vue')
+    },
+
+    // 404
+    {
+      path: '/404',
+      name: '404',
+      meta: {
+        title: '404 Not Found'
+      },
+      component: () => import('../views/error/404.vue')
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (!to.name) {
+    return next({
+      path: '/404',
+      replace: true,
+      query: {
+        errPath: to.fullPath
+      }
+    })
+  }
+
+  document.title = (to.meta.title || '首页') + ' - Nyancy Account'
+
+  next()
 })
 
 router.onError((err, to) => {
