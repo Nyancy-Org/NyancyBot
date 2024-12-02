@@ -16,7 +16,7 @@ class ExamplePlugin {
   readonly 私聊白名单: number[] = [];
   readonly 私聊黑名单: number[] = [];
 
-  readonly 仅限管理员使用 = false;
+  readonly 仅限管理员使用 = true;
 
   readonly 管理员: number[] = [];
 
