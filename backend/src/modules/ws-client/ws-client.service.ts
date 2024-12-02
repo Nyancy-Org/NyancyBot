@@ -32,6 +32,7 @@ export class WsClientService implements OnModuleInit, OnModuleDestroy {
 
     this.ws.on("close", () => {
       this.status = false;
+      this.ws = null;
       Logger.error("WebSocket 已断开");
     });
   }
