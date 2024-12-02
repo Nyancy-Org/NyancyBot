@@ -1,6 +1,6 @@
-export class Logger {
-  log(args: any) {}
-  error(args: any) {}
-  debug(args: any) {}
-  warn(args: any) {}
+export interface Logger {
+  log: (args: any) => {};
+  error: (args: any) => {};
+  debug: (args: any) => {};
+  warn: (args: any) => {};
 }

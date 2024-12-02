@@ -61,16 +61,22 @@ const setAutoLoad = async (item: PluginList) => {
 
 const reloadItem = async (item: PluginList) => {
   await openConfirmDialog('警告', `你确定要重载插件 ${item.name} ？`)
-  const { msg } = await reloadPluginApi(item)
-  loadItems()
-  return showMsg(msg, 'green')
+  try {
+    const { msg } = await reloadPluginApi(item)
+    return showMsg(msg, 'green')
+  } finally {
+    loadItems()
+  }
 }
 
 const deleteItem = async (item: PluginList) => {
   await openConfirmDialog('警告', `你确定要删除插件 ${item.name} ？此操作不可逆转！`)
-  const { msg } = await deletePluginApi(item)
-  loadItems()
-  return showMsg(msg, 'green')
+  try {
+    const { msg } = await deletePluginApi(item)
+    return showMsg(msg, 'green')
+  } finally {
+    loadItems()
+  }
 }
 
 onMounted(() => {

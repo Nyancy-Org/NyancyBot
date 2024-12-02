@@ -66,21 +66,28 @@ export class PluginsManagerService implements OnModuleDestroy {
       throw new Error(`${plugin} 无效的插件😅🤜🏼 导出不合法`);
     }
 
-    const pluginInstance = new PluginClass({
-      axios: this._axios,
-      master: config.o.admin,
-      Logger: Logger,
-    }); // 创建插件实例
-    if (
-      typeof pluginInstance.onEnable !== "function" ||
-      typeof pluginInstance.onDisable !== "function"
-    ) {
-      throw new Error(`${plugin} 无效的插件😅🤜🏼 缺少必要的方法 (onEnable/onDisable)`);
-    }
-    this.plugins.set(plugin, pluginInstance);
+    try {
+      const pluginInstance = new PluginClass({
+        axios: this._axios,
+        master: config.o.admin,
+        Logger: Logger,
+      }); // 创建插件实例
 
-    if (typeof pluginInstance.onEnable === "function") {
-      pluginInstance.onEnable(); // 调用插件的启用方法
+      if (
+        typeof pluginInstance.onEnable !== "function" ||
+        typeof pluginInstance.onDisable !== "function"
+      ) {
+        throw new Error(`${plugin} 无效的插件😅🤜🏼 缺少必要的方法 (onEnable/onDisable)`);
+      }
+
+      if (typeof pluginInstance.onEnable === "function") {
+        pluginInstance.onEnable(); // 调用插件的启用方法
+        this.plugins.set(plugin, pluginInstance); // 将插件实例存储到 Map 中
+      }
+    } catch (e: any) {
+      this.plugins.delete(plugin);
+      this.clearCache(plugin);
+      throw new Error(`插件 ${plugin} 启用失败：${e}`);
     }
   }
 

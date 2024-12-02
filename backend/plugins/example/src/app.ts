@@ -1,6 +1,7 @@
 import type { AxiosInstance } from "axios";
 import type { MessageEvent } from "./types/event";
-import { Logger } from "index";
+import type { Logger as Logger_ } from "./types";
+import u from "./utils";
 
 class ExamplePlugin {
   readonly name = "ExamplePlugin";
@@ -19,27 +20,27 @@ class ExamplePlugin {
   readonly 管理员: number[] = [];
 
   axios: AxiosInstance;
-  Logger: Logger;
+  Logger: Logger_;
   constructor({
     axios, // axios 实例
     master, // 管理员 QQ 号 []
-    Logger,
+    Logger: Logger_,
   }: {
     axios: AxiosInstance;
     master: number[];
-    Logger: Logger;
+    Logger: Logger_;
   }) {
     // 初始化插件
-    this.axios = axios;
-    this.管理员 = master;
-    this.Logger = Logger;
+    this.axios = u.axios = axios;
+    this.管理员 = u.admin = master;
+    this.Logger = u.Logger = Logger_;
   }
   onEnable() {
-    console.log(`${this.name} 已启用`);
+    this.Logger.log(`${this.name} 已启用`);
   }
 
   onDisable() {
-    console.log(`${this.name} 已禁用`);
+    this.Logger.log(`${this.name} 已禁用`);
   }
 
   handleMessage(msg: MessageEvent) {
@@ -86,9 +87,9 @@ class ExamplePlugin {
 
   async sendResult(sendTo, msgType, sApi, msg: MessageEvent) {
     if (msg.message[0].type !== "text") return; //只处理文本消息
-    const temp = msg.message[0].data.text.split(/[\n\s+,]/g).filter(Boolean);
-
-    this.Logger.log(temp); // string[]
+    const temp = msg.message[0].data.text.split(/[\n\s+,]/g).filter(Boolean); // string[]
+    const sender = `[${msg.sender.nickname}] (${msg.sender.user_id})`;
+    this.Logger.log(`[${msgType}] ${sendTo} ${sender}：${temp}`);
   }
 }
 
