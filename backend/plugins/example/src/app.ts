@@ -1,7 +1,8 @@
 import type { AxiosInstance } from "axios";
 import type { MessageEvent } from "./types/event";
 import type { Logger as Logger_ } from "./types";
-import u from "./utils";
+import { utils as u } from "./utils";
+import { handleCommand } from "./commands";
 
 class ExamplePlugin {
   readonly name = "ExamplePlugin";
@@ -85,11 +86,12 @@ class ExamplePlugin {
     }
   }
 
-  async sendResult(sendTo, msgType, sApi, msg: MessageEvent) {
+  async sendResult(sendTo: number, msgType: string, sApi: string, msg: MessageEvent) {
     if (msg.message[0].type !== "text") return; //只处理文本消息
     const temp = msg.message[0].data.text.split(/[\n\s+,]/g).filter(Boolean); // string[]
-    const sender = `[${msg.sender.nickname}] (${msg.sender.user_id})`;
-    this.Logger.log(`[${msgType}] ${sendTo} ${sender}：${temp}`);
+    // const sender = `[${msg.sender.nickname}] (${msg.sender.user_id})`;
+    // this.Logger.log(`[${msgType}] ${sendTo} ${sender}：${temp}`);
+    handleCommand(sendTo, sApi, temp);
   }
 }
 
