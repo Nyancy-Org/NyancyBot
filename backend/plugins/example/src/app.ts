@@ -1,7 +1,7 @@
 import type { AxiosInstance } from "axios";
 import type { MessageEvent } from "./types/event";
-import { Config, type Logger as Logger_, type StorageSubsystem } from "./types";
-import { utils as u } from "./utils";
+import { type Logger as Logger_, type StorageSubsystem } from "./types";
+import { initConfig, utils as u } from "./utils";
 import { handleCommand } from "./commands";
 
 class ExamplePlugin {
@@ -30,19 +30,17 @@ class ExamplePlugin {
     this.系统管理员 = u.admin = master;
     this.Logger = u.Logger = Logger_;
     this.storage = u.storage = storage;
+    u.name = this.name;
   }
 
   onEnable() {
     this.Logger.log(`${this.name} 已启用`);
-    this.initConfig();
+    initConfig();
+    console.log(u.config);
   }
 
   onDisable() {
     this.Logger.log(`${this.name} 已禁用`);
-  }
-
-  initConfig() {
-    u.config = this.storage.load("plugins", Config, "config");
   }
 
   handleMessage(msg: MessageEvent) {

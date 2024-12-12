@@ -1,5 +1,5 @@
 import type { CmdHandler, CmdTree, CmdFn } from "index";
-import { sendSingleMsg } from "./utils";
+import { initConfig, sendSingleMsg, utils as u } from "./utils";
 
 const UwU = "/test";
 export const cmd: CmdTree = {
@@ -10,6 +10,12 @@ export const cmd: CmdTree = {
     qwq: {
       _: (sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq 的逻辑"),
       awa: (sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq awa 的逻辑"),
+    },
+    reload: {
+      _: (sendTo, sApi) => {
+        initConfig();
+        sendSingleMsg(sendTo, sApi, `插件 ${u.name} 配置文件已重载~`);
+      },
     },
   },
 };
