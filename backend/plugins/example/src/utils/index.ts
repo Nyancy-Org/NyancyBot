@@ -1,10 +1,12 @@
 import type { AxiosInstance } from "axios";
-import type { Logger as Logger_ } from "@/types";
+import type { Config, Logger as Logger_, StorageSubsystem } from "@/types";
 
 export const utils = {
   axios: {} as AxiosInstance,
   Logger: {} as Logger_,
   admin: [] as number[],
+  storage: {} as StorageSubsystem,
+  config: {} as Config,
 };
 
 export const sendSingleMsg = async (sendTo: number, sApi: string, text: string) => {
