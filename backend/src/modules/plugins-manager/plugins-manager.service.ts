@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import * as fs from "fs-extra";
 import * as path from "path";
 import { config, saveConfig } from "src/utils/config";
+import StorageSystem from "src/services/system_storage";
 
 @Injectable()
 export class PluginsManagerService implements OnModuleDestroy {
@@ -31,8 +32,11 @@ export class PluginsManagerService implements OnModuleDestroy {
   list() {
     const all = fs.readdirSync(this.pluginsDir).filter((i) => {
       const itemPath = path.join(this.pluginsDir, i);
+      const entryFilePath = path.join(itemPath, this.entryFile);
+      const distPath = path.join(itemPath, "dist", this.entryFile);
       return (
-        fs.statSync(itemPath).isDirectory() && fs.existsSync(path.join(itemPath, this.entryFile))
+        fs.statSync(itemPath).isDirectory() &&
+        (fs.existsSync(entryFilePath) || (fs.existsSync(distPath) && !fs.existsSync(entryFilePath)))
       );
     });
 
@@ -52,13 +56,12 @@ export class PluginsManagerService implements OnModuleDestroy {
   }
 
   async load(plugin: string) {
-    const pluginFolderPath = path.join(this.pluginsDir, plugin);
-    const pluginPath = path.join(pluginFolderPath, this.entryFile);
+    const path = this.getPath(plugin);
 
-    if (!fs.existsSync(pluginPath)) throw new Error(`插件 ${plugin} 不存在`);
+    if (!path) throw new Error(`插件 ${plugin} 不存在`);
     if (this.plugins.has(plugin)) throw new Error(`插件 ${plugin} 已经加载`);
 
-    const pluginModule = await import(pluginPath); // 动态加载插件
+    const pluginModule = await import(path); // 动态加载插件
     const PluginClass = pluginModule?.default || pluginModule;
 
     if (typeof PluginClass !== "function") {
@@ -71,6 +74,7 @@ export class PluginsManagerService implements OnModuleDestroy {
         axios: this._axios,
         master: config.o.admin,
         Logger: Logger,
+        storage: StorageSystem,
       }); // 创建插件实例
 
       if (
@@ -113,16 +117,16 @@ export class PluginsManagerService implements OnModuleDestroy {
   }
 
   // 可能删不掉，没权限？
-  async remove(pluginName: string) {
+  async remove(name: string) {
     try {
-      await this.disable(pluginName); // 先禁用插件
+      await this.disable(name); // 先禁用插件
     } catch {}
-    const pluginPath = path.join(this.pluginsDir, pluginName);
-    if (!fs.existsSync(pluginPath)) throw new Error(`插件 ${pluginName} 不存在`);
 
-    if (fs.existsSync(pluginPath)) {
-      fs.unlinkSync(pluginPath); // 删除插件文件
-    }
+    const path = this.getPath(name);
+
+    if (!path) throw new Error(`插件 ${name} 不存在`);
+
+    fs.unlinkSync(path); // 删除插件文件
   }
 
   // 已加载的插件
@@ -167,17 +171,31 @@ export class PluginsManagerService implements OnModuleDestroy {
         try {
           await this.load(p);
         } catch (e) {
-          Logger.error(`加载插件 ${p} 失败: ${e.message}`);
+          Logger.error(`加载��件 ${p} 失败: ${e.message}`);
         }
       });
     }
   }
 
   // 清除缓存
-  private clearCache(pluginName: string) {
-    const pluginFolderPath = path.join(this.pluginsDir, pluginName);
+  private clearCache(name: string) {
+    const path = this.getPath(name);
+    delete require.cache[require.resolve(path)];
+  }
+
+  // 获取插件路径
+  getPath(name: string): string {
+    const pluginFolderPath = path.join(this.pluginsDir, name);
     const pluginPath = path.join(pluginFolderPath, this.entryFile);
-    delete require.cache[require.resolve(pluginPath)];
+    const distPath = path.join(pluginFolderPath, "dist", this.entryFile);
+
+    return fs.statSync(pluginFolderPath).isDirectory()
+      ? fs.existsSync(pluginPath)
+        ? pluginPath
+        : fs.existsSync(distPath)
+          ? distPath
+          : ""
+      : "";
   }
 
   handleWebSocketMessage(message: any) {
