@@ -56,7 +56,6 @@ defineExpose({
             label="备注"
             density="compact"
             readonly
-            hide-details
           >
           </v-text-field>
           <v-switch
