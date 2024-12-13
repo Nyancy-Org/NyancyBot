@@ -54,20 +54,20 @@ class ExamplePlugin {
           this.系统管理员.indexOf(msg.sender.user_id) !== -1 ||
           u.config.管理员.indexOf(msg.sender.user_id) !== -1
         )
-          return this.sendResult(msg.group_id, "群", "/send_group_msg", msg);
+          return this.sendResult(msg.sender.user_id, msg.group_id, "群", "/send_group_msg", msg);
         else return;
       }
 
       if (u.config.群聊白名单.length > 0) {
         if (u.config.群聊白名单.indexOf(msg.group_id!) !== -1)
-          return this.sendResult(msg.group_id, "群", "/send_group_msg", msg);
+          return this.sendResult(msg.sender.user_id, msg.group_id, "群", "/send_group_msg", msg);
         else return;
       }
 
       if (u.config.群聊黑名单.length > 0 && u.config.群聊黑名单.indexOf(msg.group_id) !== -1)
         return;
 
-      this.sendResult(msg.group_id, "群", "/send_group_msg", msg);
+      this.sendResult(msg.sender.user_id, msg.group_id, "群", "/send_group_msg", msg);
     } else if (msg.message_type == "private") {
       //私聊
 
@@ -76,29 +76,47 @@ class ExamplePlugin {
           this.系统管理员.indexOf(msg.sender.user_id) !== -1 ||
           u.config.管理员.indexOf(msg.sender.user_id) !== -1
         )
-          return this.sendResult(msg.sender.user_id, "私聊", "/send_private_msg", msg);
+          return this.sendResult(
+            msg.sender.user_id,
+            msg.sender.user_id,
+            "私聊",
+            "/send_private_msg",
+            msg,
+          );
         else return;
       }
 
       if (u.config.私聊白名单.length > 0) {
         if (u.config.私聊白名单.indexOf(msg.sender.user_id) !== -1)
-          return this.sendResult(msg.sender.user_id, "私聊", "/send_private_msg", msg);
+          return this.sendResult(
+            msg.sender.user_id,
+            msg.sender.user_id,
+            "私聊",
+            "/send_private_msg",
+            msg,
+          );
         else return;
       }
 
       if (u.config.私聊黑名单.length > 0 && u.config.私聊黑名单.indexOf(msg.sender.user_id) !== -1)
         return;
 
-      this.sendResult(msg.sender.user_id, "私聊", "/send_private_msg", msg);
+      this.sendResult(msg.sender.user_id, msg.sender.user_id, "私聊", "/send_private_msg", msg);
     }
   }
 
-  async sendResult(sendTo: number, msgType: string, sApi: string, msg: MessageEvent) {
+  async sendResult(
+    sender: number,
+    sendTo: number,
+    msgType: string,
+    sApi: string,
+    msg: MessageEvent,
+  ) {
     if (msg.message[0].type !== "text") return; //只处理文本消息
     const temp = msg.message[0].data.text.split(/[\n\s+,]/g).filter(Boolean); // string[]
     // const sender = `[${msg.sender.nickname}] (${msg.sender.user_id})`;
     // this.Logger.log(`[${msgType}] ${sendTo} ${sender}：${temp}`);
-    handleCommand(sendTo, sApi, temp);
+    handleCommand(sender, sendTo, sApi, temp);
   }
 
   getConfig() {
