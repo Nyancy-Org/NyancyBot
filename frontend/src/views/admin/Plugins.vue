@@ -148,6 +148,7 @@ onMounted(() => {
               @click="$router.push(`/admin/plugins/${item.name}/config`)"
             ></v-btn>
             <v-btn
+              :disabled="!item.enabled"
               class="mx-4"
               icon="mdi-refresh"
               variant="text"
@@ -156,6 +157,7 @@ onMounted(() => {
               @click="reloadItem(item)"
             ></v-btn>
             <v-btn
+              :disabled="item.enabled"
               icon="mdi-trash-can-outline"
               variant="text"
               size="small"

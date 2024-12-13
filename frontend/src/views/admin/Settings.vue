@@ -139,7 +139,7 @@ onMounted(() => {
             </v-row>
           </v-form>
         </v-card-text>
-        <v-card-action>
+        <v-card-actions>
           <v-btn
             prepend-icon="mdi-refresh"
             variant="tonal"
@@ -149,7 +149,11 @@ onMounted(() => {
           >
             刷新
           </v-btn>
-        </v-card-action>
+          <v-spacer />
+          <div class="text-body-2 text-disabled">
+            温馨提示：绝大部分配置修改后需要重启才能生效！
+          </div>
+        </v-card-actions>
       </v-card>
     </v-tabs-window-item>
   </v-tabs-window>
