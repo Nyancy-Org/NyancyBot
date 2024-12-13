@@ -1,8 +1,9 @@
 import type { AxiosInstance } from "axios";
 import type { MessageEvent } from "./types/event";
-import { type Logger as Logger_, type StorageSubsystem } from "./types";
-import { initConfig, utils as u } from "./utils";
+import type { Config, Logger as Logger_, StorageSubsystem } from "./types";
+import { initConfig, saveConfig as _saveConfig, utils as u } from "./utils";
 import { handleCommand } from "./commands";
+import { ConfigTranslate } from "./types/const";
 
 class ExamplePlugin {
   readonly name = "ExamplePlugin";
@@ -99,6 +100,18 @@ class ExamplePlugin {
     // const sender = `[${msg.sender.nickname}] (${msg.sender.user_id})`;
     // this.Logger.log(`[${msgType}] ${sendTo} ${sender}：${temp}`);
     handleCommand(sendTo, sApi, temp);
+  }
+
+  getConfig() {
+    return Object.entries(u.config).map(([key, value]) => ({
+      name: key,
+      note: ConfigTranslate[key] ?? key,
+      value: value,
+    }));
+  }
+
+  saveConfig(_config: Config) {
+    _saveConfig(_config);
   }
 }
 

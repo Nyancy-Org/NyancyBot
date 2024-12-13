@@ -9,6 +9,7 @@ import StorageSystem from "src/services/system_storage";
 export class PluginsManagerService implements OnModuleDestroy {
   private plugins: Map<string, any> = new Map(); // 存储插件实例
   private readonly pluginsDir = path.resolve(process.cwd(), "plugins");
+  private readonly pluginsDataDir = path.resolve(process.cwd(), "data/plugins");
   private readonly entryFile: string;
   _axios: AxiosInstance;
 
@@ -129,6 +130,40 @@ export class PluginsManagerService implements OnModuleDestroy {
     fs.unlinkSync(path); // 删除插件文件
   }
 
+  getPluginConfig(name: string) {
+    const pluginInstance = this.plugins.get(name);
+    if (!pluginInstance) throw new Error(`插件 ${name} 未加载`);
+    return {
+      data: pluginInstance.getConfig(),
+    };
+    // const pluginInstance = this.plugins.get(name);
+    // if (pluginInstance) {
+    //   return {
+    //     data: pluginInstance.getConfig(),
+    //   };
+    // } else {
+    //   if (! this.getPath(name)) throw new Error(`插件 ${name} 不存在`);
+
+    //   // 读取配置文件的逻辑
+    //   const configPath = path.resolve(this.pluginsDataDir, `${name}.json`) // 假设配置文件名为 config.json
+    //   if (!fs.existsSync(configPath)) throw new Error(`插件 ${name} 配置文件不存在`);
+
+    //   const configData = fs.readFileSync(configPath, "utf-8");
+    //   return {
+    //     data: JSON.parse(configData),
+    //   };
+    // }
+  }
+
+  savePluginConfig(name: string, config: Record<string, any>) {
+    const pluginInstance = this.plugins.get(name);
+    if (!pluginInstance) throw new Error(`插件 ${name} 未加载`);
+    pluginInstance.saveConfig(config);
+    return {
+      msg: "保存成功",
+    };
+  }
+
   // 已加载的插件
   loadedList() {
     return {
@@ -171,7 +206,7 @@ export class PluginsManagerService implements OnModuleDestroy {
         try {
           await this.load(p);
         } catch (e) {
-          Logger.error(`加载��件 ${p} 失败: ${e.message}`);
+          Logger.error(`加载件 ${p} 失败: ${e.message}`);
         }
       });
     }

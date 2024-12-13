@@ -18,7 +18,6 @@ const { showMsg, openConfirmDialog } = indexStore(),
     { key: 'autoLoad', title: '自启动' },
     { key: 'operate', title: '操作', sortable: false }
   ]),
-  oDialog = ref<InstanceType<any>>(),
   serverItems = ref<PluginList[]>([]),
   totalItems = ref(0),
   loading = ref(false)
@@ -141,7 +140,15 @@ onMounted(() => {
           </template>
           <template v-slot:[`item.operate`]="{ item }">
             <v-btn
-              class="mr-4"
+              :disabled="!item.enabled"
+              icon="mdi-pencil"
+              variant="text"
+              size="small"
+              color="blue"
+              @click="$router.push(`/admin/plugins/${item.name}/config`)"
+            ></v-btn>
+            <v-btn
+              class="mx-4"
               icon="mdi-refresh"
               variant="text"
               size="small"

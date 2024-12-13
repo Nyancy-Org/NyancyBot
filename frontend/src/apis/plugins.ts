@@ -1,4 +1,4 @@
-import type { PluginList } from '@/types/plugin'
+import type { PluginList, PluginConfig } from '@/types/plugin'
 import { getResponse } from '@/utils'
 import { axios } from '@/utils/request'
 
@@ -48,3 +48,11 @@ export const reloadPluginApi = async (plugin: PluginList) =>
       name: plugin.name
     })
   )
+
+// 获取插件配置文件
+export const getPluginConfigApi = async (name: string) =>
+  getResponse<PluginConfig[]>(await axios.get(`/plugins/${name}/config`))
+
+// 保存插件配置文件
+export const savePluginConfigApi = async (name: string, data: Record<string, any>) =>
+  getResponse<null>(await axios.put(`/plugins/${name}/config`, data))

@@ -54,6 +54,15 @@ const router = createRouter({
         },
 
         {
+          path: 'plugins/:name/config',
+          name: 'pluginsConfig',
+          meta: {
+            title: '插件配置'
+          },
+          component: () => import('../views/admin/PluginConfig.vue')
+        },
+
+        {
           path: 'ws',
           name: 'ws',
           meta: {

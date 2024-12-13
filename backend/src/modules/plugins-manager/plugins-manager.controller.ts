@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Delete, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Delete, Query, Param, Put } from "@nestjs/common";
 import { PluginsManagerService } from "./plugins-manager.service";
 import { PluginAutoLoad, PluginNameDto } from "./plugins-manager.dto";
 
@@ -76,5 +76,18 @@ export class PluginsManagerController {
     return {
       msg: `设置成功`,
     };
+  }
+
+  // 获取插件配置
+  @Get(":name/config")
+  getPluginConfig(@Param("name") name: string) {
+    return this.pluginsManagerService.getPluginConfig(name);
+  }
+
+  // 保存插件配置
+  // TODO: 没做任何校验，，
+  @Put(":name/config")
+  savePluginConfig(@Param("name") name: string, @Body() body: Record<string, any>) {
+    return this.pluginsManagerService.savePluginConfig(name, body);
   }
 }

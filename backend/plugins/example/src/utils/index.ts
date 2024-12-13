@@ -46,4 +46,8 @@ export const initConfig = () => {
   u.config = config;
 };
 
-export const saveConfig = (_config: Config) => utils.storage.store("plugins", utils.name, _config);
+export const saveConfig = (_config: Config) => {
+  const u = utils;
+  u.storage.store("plugins", utils.name, _config);
+  u.config = _config;
+};
