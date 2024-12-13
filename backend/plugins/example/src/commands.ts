@@ -1,4 +1,4 @@
-import type { CmdHandler, CmdTree, CmdFn } from "index";
+import type { CmdHandler, CmdTree, CmdFn } from "./types";
 import { initConfig, sendSingleMsg, utils as u } from "./utils";
 
 const UwU = "/test";

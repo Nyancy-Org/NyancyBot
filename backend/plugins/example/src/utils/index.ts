@@ -1,5 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type { Config as Config_, Logger as Logger_, StorageSubsystem } from "@/types";
+import type { Config as Config_, Logger as Logger_, StorageSubsystem } from "../types";
 
 // TODO: BUG,,,,
 import { Config } from "../types";

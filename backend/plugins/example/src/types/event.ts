@@ -1,4 +1,4 @@
-import { Segment } from "message";
+import { Segment } from "./message";
 
 export interface Sender {
   user_id: number; // 发送者 QQ 号
