@@ -47,6 +47,7 @@ const saveItem = async (item: PluginConfig) => {
   showMsg(msg, 'green')
   return loadItems()
 }
+
 onMounted(() => {
   loadItems()
 })

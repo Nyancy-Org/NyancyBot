@@ -18,6 +18,7 @@ export function initConfig() {
 
 export function saveConfig(_config: AppConfig) {
   StorageSystem.store("AppConfig", "config", _config);
+  config = _config;
 }
 
 export { config, AppConfig };
