@@ -4,15 +4,15 @@ import { initConfig, sendSingleMsg, utils as u } from "./utils";
 const UwU = "/test";
 export const cmd: CmdTree = {
   [UwU]: {
-    _: (sendTo, sApi) => {
+    _: (sender, sendTo, sApi) => {
       sendSingleMsg(sendTo, sApi, `执行 /test 的逻辑`);
     },
     qwq: {
-      _: (sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq 的逻辑"),
-      awa: (sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq awa 的逻辑"),
+      _: (sender, sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq 的逻辑"),
+      awa: (sender, sendTo, sApi) => sendSingleMsg(sendTo, sApi, "执行 /test qwq awa 的逻辑"),
     },
     reload: {
-      _: (sendTo, sApi) => {
+      _: (sender, sendTo, sApi) => {
         initConfig();
         sendSingleMsg(sendTo, sApi, `插件 ${u.name} 配置文件已重载~`);
       },
@@ -20,7 +20,7 @@ export const cmd: CmdTree = {
   },
 };
 
-export const handleCommand = (sendTo: number, sApi: string, input: string[]) => {
+export const handleCommand = (sender: number, sendTo: number, sApi: string, input: string[]) => {
   if (!input || input[0] !== UwU) return;
 
   let current: CmdTree | CmdHandler | CmdFn = cmd;
@@ -35,6 +35,6 @@ export const handleCommand = (sendTo: number, sApi: string, input: string[]) => 
   }
 
   if (current._) {
-    (current as CmdHandler)._(sendTo, sApi); // 执行命令
+    (current as CmdHandler)._(sender, sendTo, sApi); // 执行命令
   }
 };
