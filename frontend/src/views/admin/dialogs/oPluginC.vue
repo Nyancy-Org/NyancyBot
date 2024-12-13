@@ -25,7 +25,7 @@ const handleOk = async () => {
     if (!form.value) return
     const { valid } = await form.value.validate()
     if (!valid) return
-    if (numMode) {
+    if (numMode.value) {
       formData.value.value = formData.value.value.map((val: string) => Number(val))
     }
     emit('update', formData.value)

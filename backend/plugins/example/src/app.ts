@@ -37,7 +37,6 @@ class ExamplePlugin {
   onEnable() {
     this.Logger.log(`${this.name} 已启用`);
     initConfig();
-    console.log(u.config);
   }
 
   onDisable() {
