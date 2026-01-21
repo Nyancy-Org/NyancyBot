@@ -34,7 +34,9 @@ export const handleCommand = (sender: number, sendTo: number, sApi: string, inpu
     }
   }
 
-  if (current._) {
+  if (typeof current === "function") {
+    (current as CmdFn)(sender, sendTo, sApi); // 执行命令
+  } else if (current._) {
     (current as CmdHandler)._(sender, sendTo, sApi); // 执行命令
   }
 };
