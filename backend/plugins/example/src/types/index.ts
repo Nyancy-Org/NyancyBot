@@ -17,7 +17,7 @@ export interface Logger {
   warn: (args: any) => {};
 }
 
-export type CmdFn = (sender: number, sendTo: number, sApi: string) => void;
+export type CmdFn = (sender: number, sendTo: number, sApi: string, ...args: string[]) => void;
 export interface CmdHandler {
   _: CmdFn;
   [key: string]: CmdHandler | CmdFn;
