@@ -6,7 +6,6 @@ import { WsClientModule } from "./modules/ws-client/ws-client.module";
 import { SettingsModule } from "./modules/settings/settings.module";
 import * as path from "path";
 import { responseMiddleware } from "./middlewares/response";
-import { AppController } from "./app.controller";
 
 @Module({
   imports: [
@@ -20,7 +19,6 @@ import { AppController } from "./app.controller";
     WsClientModule,
     SettingsModule,
   ],
-  controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {
