@@ -6,19 +6,21 @@ import { WsClientModule } from "./modules/ws-client/ws-client.module";
 import { SettingsModule } from "./modules/settings/settings.module";
 import * as path from "path";
 import { responseMiddleware } from "./middlewares/response";
+import { AppController } from "./app.controller";
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: path.join(process.cwd(), "public"),
       serveRoot: "/",
+      exclude: ["/api*"],
     }),
     MainModule,
     PluginsManagerModule,
     WsClientModule,
     SettingsModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {
